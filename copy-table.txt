@@ -1,0 +1,348 @@
+mysql: [Warning] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe: ignoring option '--no-beep' due to invalid value ''.
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 14
+Server version: 8.0.19 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| centreformation    |
+| entreprise         |
+| information_schema |
+| isgi               |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> create database Test3;
+Query OK, 1 row affected (0.16 sec)
+
+mysql> create table stagiaire(
+    -> code_stg int primary key,
+    ->  nom_stg varchar(20) not null);
+ERROR 1046 (3D000): No database selected
+mysql> use test3;
+Database changed
+mysql> create table stargiaire(
+    -> code_stg int primary key,
+    -> nom_stg varchar(20) not null);
+Query OK, 0 rows affected (1.00 sec)
+
+mysql> desc stargiaire;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| code_stg | int         | NO   | PRI | NULL    |       |
+| nom_stg  | varchar(20) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select* from stargiaire;
+Empty set (0.27 sec)
+
+mysql> insert into stargiaire
+    -> values(1,'kabbour'),
+    -> values(2,'bouchaib');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values(2,'bouchaib')' at line 3
+mysql> insert into stargiaire
+    -> values(1,'Amine'),
+    -> (2,'Younes');
+Query OK, 2 rows affected (0.18 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from stargiaire;
++----------+---------+
+| code_stg | nom_stg |
++----------+---------+
+|        1 | Amine   |
+|        2 | Younes  |
++----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> insert into stargiaire
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> create table stg_copy like stargiaire;
+Query OK, 0 rows affected (1.09 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_test3 |
++-----------------+
+| stargiaire      |
+| stg_copy        |
++-----------------+
+2 rows in set (0.00 sec)
+
+mysql> desc stg_copy;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| code_stg | int         | NO   | PRI | NULL    |       |
+| nom_stg  | varchar(20) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stg_copy;
+Empty set (0.00 sec)
+
+mysql> insert into stg_copy select * from stargiaire;
+Query OK, 2 rows affected (0.15 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from stg_copy;
++----------+---------+
+| code_stg | nom_stg |
++----------+---------+
+|        1 | Amine   |
+|        2 | Younes  |
++----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stargiaire;7
++----------+---------+
+| code_stg | nom_stg |
++----------+---------+
+|        1 | Amine   |
+|        2 | Younes  |
++----------+---------+
+2 rows in set (0.00 sec)
+
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '7' at line 1
+mysql> delete from stg_copy where code_stg = 2;
+Query OK, 1 row affected (0.13 sec)
+
+mysql> select * from stg_copy;
++----------+---------+
+| code_stg | nom_stg |
++----------+---------+
+|        1 | Amine   |
++----------+---------+
+1 row in set (0.00 sec)
+
+mysql> drop table stg_copy;
+Query OK, 0 rows affected (0.83 sec)
+
+mysql> show tables ;
++-----------------+
+| Tables_in_test3 |
++-----------------+
+| stargiaire      |
++-----------------+
+1 row in set (0.00 sec)
+
+mysql> alter table stargiaire
+    -> drop primary key;
+Query OK, 2 rows affected (2.12 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from stargiaire;
++----------+---------+
+| code_stg | nom_stg |
++----------+---------+
+|        1 | Amine   |
+|        2 | Younes  |
++----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> desc stargiaire;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| code_stg | int         | NO   |     | NULL    |       |
+| nom_stg  | varchar(20) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> alter table  stargiaire
+    ->  add primary key (code_stg);
+Query OK, 0 rows affected (1.43 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stargiaire;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| code_stg | int         | NO   | PRI | NULL    |       |
+| nom_stg  | varchar(20) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> create table Groupe(
+    -> code_gr int primary key,
+    -> nom_gr varchar (10) not null unique ,
+    -> filiere_gr varchar (10) not null);
+Query OK, 0 rows affected (0.75 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_test3 |
++-----------------+
+| groupe          |
+| stargiaire      |
++-----------------+
+2 rows in set (0.00 sec)
+
+mysql> desc groupe ;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| code_gr    | int         | NO   | PRI | NULL    |       |
+| nom_gr     | varchar(10) | NO   | UNI | NULL    |       |
+| filiere_gr | varchar(10) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from groupe ;
+Empty set (0.00 sec)
+
+mysql> insert into groupe
+    -> values (1,'Dev104','info'),
+    -> (2,'gest109','gestion'),
+    -> (3,'dev108','info');
+Query OK, 3 rows affected (0.28 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from groupe;
++---------+---------+------------+
+| code_gr | nom_gr  | filiere_gr |
++---------+---------+------------+
+|       1 | Dev104  | info       |
+|       2 | gest109 | gestion    |
+|       3 | dev108  | info       |
++---------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table stargiaire
+    -> add code_gr int ;
+Query OK, 0 rows affected (0.72 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc stargiaire ;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| code_stg | int         | NO   | PRI | NULL    |       |
+| nom_stg  | varchar(20) | NO   |     | NULL    |       |
+| code_gr  | int         | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from stargiaire ;
++----------+---------+---------+
+| code_stg | nom_stg | code_gr |
++----------+---------+---------+
+|        1 | Amine   |    NULL |
+|        2 | Younes  |    NULL |
++----------+---------+---------+
+2 rows in set (0.00 sec)
+
+mysql> alter table stargiaire
+    -> add foreign key (code_gr) references groupe (code_gr);
+Query OK, 2 rows affected (1.76 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> desc stargiaire;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| code_stg | int         | NO   | PRI | NULL    |       |
+| nom_stg  | varchar(20) | NO   |     | NULL    |       |
+| code_gr  | int         | YES  | MUL | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> update stargiaire
+    -> set code_gr = 3 where code_stg = 1;
+Query OK, 1 row affected (0.24 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update stargiaire
+    ->  set code_gr = 1 where code_stg = 2;
+Query OK, 1 row affected (0.17 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from groupe;
++---------+---------+------------+
+| code_gr | nom_gr  | filiere_gr |
++---------+---------+------------+
+|       1 | Dev104  | info       |
+|       2 | gest109 | gestion    |
+|       3 | dev108  | info       |
++---------+---------+------------+
+3 rows in set (0.00 sec)
+
+mysql> delete from groupe where code_gr = 2;
+Query OK, 1 row affected (0.27 sec)
+
+mysql> select * from groupe ;
++---------+--------+------------+
+| code_gr | nom_gr | filiere_gr |
++---------+--------+------------+
+|       1 | Dev104 | info       |
+|       3 | dev108 | info       |
++---------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stargiaire join groupe where stargiaire.code_gr = groupe.code_gr;
++----------+---------+---------+---------+--------+------------+
+| code_stg | nom_stg | code_gr | code_gr | nom_gr | filiere_gr |
++----------+---------+---------+---------+--------+------------+
+|        2 | Younes  |       1 |       1 | Dev104 | info       |
+|        1 | Amine   |       3 |       3 | dev108 | info       |
++----------+---------+---------+---------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stargiaire join groupe ;
++----------+---------+---------+---------+--------+------------+
+| code_stg | nom_stg | code_gr | code_gr | nom_gr | filiere_gr |
++----------+---------+---------+---------+--------+------------+
+|        1 | Amine   |       3 |       1 | Dev104 | info       |
+|        2 | Younes  |       1 |       1 | Dev104 | info       |
+|        1 | Amine   |       3 |       3 | dev108 | info       |
+|        2 | Younes  |       1 |       3 | dev108 | info       |
++----------+---------+---------+---------+--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> select code_stg, nom_stg, filiere_gr from stargiaire join groupe where stargiaire.code_gr = groupe.code_gr;
++----------+---------+------------+
+| code_stg | nom_stg | filiere_gr |
++----------+---------+------------+
+|        2 | Younes  | info       |
+|        1 | Amine   | info       |
++----------+---------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select code_stg, nom_stg,nom_gr, filiere_gr from stargiaire join groupe where stargiaire.code_gr = groupe.code_gr;
++----------+---------+--------+------------+
+| code_stg | nom_stg | nom_gr | filiere_gr |
++----------+---------+--------+------------+
+|        2 | Younes  | Dev104 | info       |
+|        1 | Amine   | dev108 | info       |
++----------+---------+--------+------------+
+2 rows in set (0.00 sec)
+
+mysql> desc groupe;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| code_gr    | int         | NO   | PRI | NULL    |       |
+| nom_gr     | varchar(10) | NO   | UNI | NULL    |       |
+| filiere_gr | varchar(10) | NO   |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql>
